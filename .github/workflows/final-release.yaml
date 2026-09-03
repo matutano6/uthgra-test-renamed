@@ -34,7 +34,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Build imagen docker con comandos
-        run: docker build -t ghcr.io/uthgra-osuthgra/${{ env.APPLICATION_NAME }}:${{ github.ref_name }} .
+        run: docker build -t ghcr.io/matutano6/${{ env.APPLICATION_NAME }}:${{ github.ref_name }} .
 
       - name: Push imagen docker a registry GitHub
-        run: docker push ghcr.io/uthgra-osuthgra/${{ env.APPLICATION_NAME }}:${{ github.ref_name }}
+        run: docker push ghcr.io/matutano6/${{ env.APPLICATION_NAME }}:${{ github.ref_name }}
