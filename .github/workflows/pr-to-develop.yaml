@@ -20,7 +20,5 @@ jobs:
         run: echo "TIMESTAMP=$(date +%Y%m%d%H%M%S)" >> "$GITHUB_ENV"
 
       - name: Build imagen docker con comandos
-        run: |
-          cd PExpress
-          docker build -t ${{ env.APPLICATION_NAME }}:snapshot-$TIMESTAMP .
+        run: docker build -t ${{ env.APPLICATION_NAME }}:snapshot-$TIMESTAMP .
 
