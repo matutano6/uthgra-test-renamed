@@ -28,8 +28,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           
+      - name: Set timestamp
+        run: echo "TIMESTAMP=$(date +%Y%m%d%H%M%S)" >> "$GITHUB_ENV"
+
       - name: Build imagen docker con comandos
-        run: docker build -t ghcr.io/uthgra-osuthgra/${{ env.APPLICATION_NAME }}:snapshot-${{ github.event.head_commit.timestamp }} .
+        run: docker build -t ghcr.io/uthgra-osuthgra/${{ env.APPLICATION_NAME }}:snapshot-$TIMESTAMP .
 
       - name: Push imagen docker a registry GitHub
-        run: docker push ghcr.io/uthgra-osuthgra/${{ env.APPLICATION_NAME }}:snapshot-${{ github.event.head_commit.timestamp }}
+        run: docker push ghcr.io/uthgra-osuthgra/${{ env.APPLICATION_NAME }}:snapshot-$TIMESTAMP
