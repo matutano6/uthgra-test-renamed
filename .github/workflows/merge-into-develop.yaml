@@ -1,0 +1,38 @@
+name: Merge a develop
+run-name: Merge a develop
+
+env:
+  APPLICATION_NAME: ${{ github.event.repository.name }}
+
+on:
+  push:
+    branches:
+      - 'develop'
+
+jobs:
+  Build-Docker-Image:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v4.4.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Set timestamp
+        run: echo "TIMESTAMP=$(date +%Y%m%d%H%M%S)" >> "$GITHUB_ENV"
+
+      - name: Build imagen docker con comandos
+        run: docker build -t ghcr.io/matutano6/${{ env.APPLICATION_NAME }}:snapshot-$TIMESTAMP .
+
+      - name: Push imagen docker a registry GitHub
+        run: docker push ghcr.io/matutano6/${{ env.APPLICATION_NAME }}:snapshot-$TIMESTAMP

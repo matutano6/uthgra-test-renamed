@@ -1,0 +1,40 @@
+name: Workflow para buildear imagen Docker cuando se hace un tag en un branch de release
+run-name: Release Candidate
+
+env:
+  APPLICATION_NAME: ${{ github.event.repository.name }}
+
+on:
+  push:
+    branches:
+      - 'release/*'
+    tags:
+      - '*-rc*'
+      
+jobs:
+  Build-Docker-Image:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v4.4.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Build imagen docker con comandos
+        run: docker build -t ghcr.io/matutano6/${{ env.APPLICATION_NAME }}:${{ github.ref_name }} .
+
+      - name: Push imagen docker a registry GitHub
+        run: docker push ghcr.io/matutano6/${{ env.APPLICATION_NAME }}:${{ github.ref_name }}
