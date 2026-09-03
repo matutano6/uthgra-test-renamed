@@ -1,5 +1,5 @@
-name: PR con destino develop
-run-name: PR con destino develop
+name: Merge a develop
+run-name: Merge a develop
 
 env:
   APPLICATION_NAME: ${{ github.event.repository.name }}
@@ -32,7 +32,7 @@ jobs:
         run: echo "TIMESTAMP=$(date +%Y%m%d%H%M%S)" >> "$GITHUB_ENV"
 
       - name: Build imagen docker con comandos
-        run: docker build -t ghcr.io/uthgra-osuthgra/${{ env.APPLICATION_NAME }}:snapshot-$TIMESTAMP .
+        run: docker build -t ghcr.io/matutano6/${{ env.APPLICATION_NAME }}:snapshot-$TIMESTAMP .
 
       - name: Push imagen docker a registry GitHub
-        run: docker push ghcr.io/uthgra-osuthgra/${{ env.APPLICATION_NAME }}:snapshot-$TIMESTAMP
+        run: docker push ghcr.io/matutano6/${{ env.APPLICATION_NAME }}:snapshot-$TIMESTAMP
